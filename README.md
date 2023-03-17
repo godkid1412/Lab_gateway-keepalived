@@ -87,3 +87,6 @@ Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/ipt
 
 ![image](https://user-images.githubusercontent.com/54473576/225796248-bf3fbc92-cea1-4e39-985f-78df82fc1d12.png)
 
+Cài đặt gateway là địa chỉ của NIC ens37 của gateway
+
+Address là host address của mạng 10.0.0.0/24
