@@ -50,6 +50,38 @@ gw1@gateway:~$ ip a
        valid_lft forever preferred_lft forever
 ```
 
+### Cài đặt isc-dhcp-server
+
+Cài đặt isc-dhcp-server
+
+```
+sudo apt install isc-dhcp-server
+```
+Dùng `sudo /etc/dhcp/dhcp.conf` để sửa file config
+
+```
+# To specify the default and maximum lease time 
+default-lease-time 600;
+
+max-lease-time 7200;
+
+ddns-update-style none;
+
+authoritative;
+
+subnet 10.0.0.0 netmask 255.255.255.0
+{
+        range 10.0.0.100 10.0.0.200;
+        option routers 10.0.0.1;
+        option subnet-mask 255.255.255.0;
+}
+```
+
+Dùng `sudo systemctl restart isc-dhcp-server` để khởi động dịch vụ `isc-dhcp-server`
+
+Dùng `sudo systemctl enable isc-dhcp-server` để bật dịch vụ `isc-dhcp-server`
+
+
 ### Enable IPv4_forward:
 
 Để nhận các gói tin từ NIC này sang NIC khác của máy
@@ -86,8 +118,6 @@ Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/ipt
 
 ### Đối với máy client:
 
-![image](https://user-images.githubusercontent.com/54473576/225796248-bf3fbc92-cea1-4e39-985f-78df82fc1d12.png)
+![image](https://user-images.githubusercontent.com/54473576/225839656-011d4d21-67d6-4eb0-ba37-c60a9086e1ea.png)
 
-Cài đặt gateway là địa chỉ của NIC ens37 của gateway
-
-Address là host address của mạng 10.0.0.0/24
+IPv4 Methor để DHCP
