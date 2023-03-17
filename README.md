@@ -85,4 +85,5 @@ Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/ipt
 
 ### Đối với máy client:
 
+![image](https://user-images.githubusercontent.com/54473576/225796248-bf3fbc92-cea1-4e39-985f-78df82fc1d12.png)
 
