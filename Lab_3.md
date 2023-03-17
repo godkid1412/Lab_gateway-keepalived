@@ -1,7 +1,13 @@
 # Lab 3:
+<img width="738" alt="image" src="https://user-images.githubusercontent.com/54473576/225810956-0764dd06-c5d1-40a8-a252-af80cb512678.png">
 
-Mục đích của
+Mục đích: 
+```
+2 con gateway đều làm nhiệm vụ nat ra ngoài.
+Mỗi gateway đều có 2 đường để NAT ra ngoài cho trường hợp 1 trong 2 đường đây có vấn đề
 
+Cài đặt keepalive cho trường hợp gateway chính bị down thì có con gateway khác thay thế làm nhiệm bụ NAT
+```
 
 Bài lab gồm:
   - 1 ubuntu server đóng vai trò là gateway. Ubuntu gồm 3 NIC, 2 NIC được kết nối với internet và 1 NIC được kết nối với 1 LAN
@@ -302,7 +308,7 @@ Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/ipt
   
   Đặt gateway là virtual_ipaddress đã cài ở trên
   
-  IP address là IP ở 
+  IP address là IP ở dải mạng 10.0.0.0/24
   
  
   ![image](https://user-images.githubusercontent.com/54473576/225810338-9d91f2ec-cfb1-472e-b0b2-7b7235fa6d48.png)
