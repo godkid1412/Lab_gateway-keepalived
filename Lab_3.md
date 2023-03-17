@@ -303,6 +303,38 @@ Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/ipt
     inet6 fe80::20c:29ff:fe28:1321/64 scope link 
        valid_lft forever preferred_lft forever
   ```
+
+### Cài đặt isc-dhcp-server trên cả 2 server
+
+Cài đặt isc-dhcp-server
+
+```
+sudo apt install isc-dhcp-server
+```
+Dùng `sudo vim /etc/dhcp/dhcpd.conf` để sửa file config
+
+```
+# To specify the default and maximum lease time 
+default-lease-time 600;
+
+max-lease-time 7200;
+
+ddns-update-style none;
+
+authoritative;
+
+subnet 10.0.0.0 netmask 255.255.255.0
+{
+        range 10.0.0.100 10.0.0.200;
+        option routers 10.0.0.4;
+        option subnet-mask 255.255.255.0;
+}
+```
+
+Dùng `sudo systemctl restart isc-dhcp-server` để khởi động dịch vụ `isc-dhcp-server`
+
+Dùng `sudo systemctl enable isc-dhcp-server` để bật dịch vụ `isc-dhcp-server`
+
   
 ### Đối với máy client:
 
