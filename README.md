@@ -1,6 +1,7 @@
 # Lab 1:
 
-![image](https://user-images.githubusercontent.com/54473576/225788496-a35ec7cc-0317-416f-9a43-62d959c2f813.png)
+![image](https://user-images.githubusercontent.com/54473576/225796696-78ef217c-4c50-4ec4-a1f6-66d4b96a97cf.png)
+
 
 Bài lab gồm:
   - 1 ubuntu server đóng vai trò là gateway. Ubuntu gồm 2 NIC, 1 NIC được kết nối với internet và 1 NIC được kết nối với 1 LAN
