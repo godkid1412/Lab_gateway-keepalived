@@ -57,7 +57,7 @@ Cài đặt isc-dhcp-server
 ```
 sudo apt install isc-dhcp-server
 ```
-Dùng `sudo vim /etc/dhcp/dhcp.conf` để sửa file config
+Dùng `sudo vim /etc/dhcp/dhcpd.conf` để sửa file config
 
 ```
 # To specify the default and maximum lease time 
