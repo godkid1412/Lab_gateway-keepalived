@@ -1,6 +1,6 @@
 # Lab 2:
 
-Mục đích của
+Mục đích: 1 server làm nhiệm vụ NAT, trong trường hợp 1 đường dây mạng bị down thì có đường dây Internet dự bị khác để thay 
 
 <img width="574" alt="image" src="https://user-images.githubusercontent.com/54473576/225797096-82864ba9-e576-4705-961b-00fc34c08ceb.png">
 
