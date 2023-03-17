@@ -300,6 +300,10 @@ Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/ipt
   
   ### Cài đặt trên các máy client
   
+  Đặt gateway là virtual_ipaddress đã cài ở trên
   
+  IP address là IP ở 
+  
+ 
   ![image](https://user-images.githubusercontent.com/54473576/225810338-9d91f2ec-cfb1-472e-b0b2-7b7235fa6d48.png)
 
