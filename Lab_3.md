@@ -15,7 +15,7 @@ Bài lab gồm:
 
 <summary>Cài đặt NAT trên gateway 1</summary>
 
-### Thay đổi IPv4 của interface ens37 
+#### Thay đổi IPv4 của interface ens37 
 
 Dùng: `sudo vim /etc/netplan/00-installer-config.yaml`.
 
@@ -45,7 +45,7 @@ gw1@gateway:~$ ip a
 2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
     link/ether 00:0c:29:28:13:17 brd ff:ff:ff:ff:ff:ff
     altname enp2s1
-    inet 172.16.217.130/24 metric 100 brd 172.16.217.255 scope global dynamic ens33
+    inet 172.16.217.133/24 metric 100 brd 172.16.217.255 scope global dynamic ens33
        valid_lft 1719sec preferred_lft 1719sec
     inet6 fe80::20c:29ff:fe28:1317/64 scope link 
        valid_lft forever preferred_lft forever
@@ -59,13 +59,13 @@ gw1@gateway:~$ ip a
 4: ens38: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
     link/ether 00:0c:29:28:13:2b brd ff:ff:ff:ff:ff:ff
     altname enp2s6
-    inet 172.16.217.136/24 metric 100 brd 172.16.217.255 scope global dynamic ens38
+    inet 172.16.217.139/24 metric 100 brd 172.16.217.255 scope global dynamic ens38
        valid_lft 1719sec preferred_lft 1719sec
     inet6 fe80::20c:29ff:fe28:132b/64 scope link 
        valid_lft forever preferred_lft forever
 ```
 
-### Enable IPv4_forward:
+#### Enable IPv4_forward:
 
 Để nhận các gói tin từ NIC này sang NIC khác của máy
 
@@ -75,7 +75,7 @@ Mở file /etc/sysctl.conf dùng `sudo vim /etc/sysctl.conf`. Nhấn `i` để v
 
 Áp dụng thay đổi tức thì mà không cần reboot dùng: `sudo sysctl -p /etc/sysctl.conf`
 
-### Cài đặt NAT:
+#### Cài đặt NAT:
 
 Cài đặt iptables-persistent: dùng `sudo apt-get install iptables-persistent`
 
@@ -95,22 +95,22 @@ Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
 Chain POSTROUTING (policy ACCEPT 0 packets, 0 bytes)
  pkts bytes target     prot opt in     out     source               destination
 ```
-Dùng 
+Dùng các lệnh dưới để thêm rule NAT
 ```
 sudo iptables --table nat --append POSTROUTING -s 10.0.0.0/24 --out-interface ens33 --jump MASQUERADE
 
 sudo iptables --table nat --append POSTROUTING -s 10.0.0.0/24 --out-interface ens38 --jump MASQUERADE
 
 ``` 
-để thêm rule NAT
-
 Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/iptables/rules.v4`
-
 </details>
- fvcf
+  
+---------
+  
+<details>
 <summary>Cài đặt NAT trên gateway 2</summary>
 
-### Thay đổi IPv4 của interface ens37 
+#### Thay đổi IPv4 của interface ens37 
 
 Dùng: `sudo vim /etc/netplan/00-installer-config.yaml`.
 
@@ -160,7 +160,7 @@ gw2@gateway:~$ ip a
        valid_lft forever preferred_lft forever
 ```
 
-### Enable IPv4_forward:
+#### Enable IPv4_forward:
 
 Để nhận các gói tin từ NIC này sang NIC khác của máy
 
@@ -170,7 +170,7 @@ Mở file /etc/sysctl.conf dùng `sudo vim /etc/sysctl.conf`. Nhấn `i` để v
 
 Áp dụng thay đổi tức thì mà không cần reboot dùng: `sudo sysctl -p /etc/sysctl.conf`
 
-### Cài đặt NAT:
+#### Cài đặt NAT:
 
 Cài đặt iptables-persistent: dùng `sudo apt-get install iptables-persistent`
 
@@ -190,15 +190,114 @@ Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
 Chain POSTROUTING (policy ACCEPT 0 packets, 0 bytes)
  pkts bytes target     prot opt in     out     source               destination
 ```
-Dùng 
+Dùng các lệnh dưới để để thêm rule NAT
 ```
 sudo iptables --table nat --append POSTROUTING -s 10.0.0.0/24 --out-interface ens33 --jump MASQUERADE
 
 sudo iptables --table nat --append POSTROUTING -s 10.0.0.0/24 --out-interface ens38 --jump MASQUERADE
 
 ``` 
-để thêm rule NAT
 
 Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/iptables/rules.v4`
 
 </details>
+
+ ### Cài đặt và cấu hình keepalived trên từng server
+ 
+  #### **Cài đặt keepalived trên cả 2 gateway**
+   
+  ```
+    sudo apt-get install linux-headers-$(uname -r)
+
+    sudo apt-get install keepalived
+  ```
+  
+  #### tạo hoặc chỉnh sửa file config của keepalive ta dùng:
+   ```
+   sudo vim /etc/keepalived/keepalived.conf
+   ```
+  
+ <details>
+   <summary>File cấu hình keepalive của gateway 1</summary>
+
+   ```
+   global_defs {
+        smtp_server localhost
+        smtp_connect_timeout 30
+   }
+
+   vrrp_instance VI_1 {
+        state BACKUP
+        interface ens37
+        virtual_router_id 101
+        priority 101
+        advert_int 1
+        authentication {
+                auth_type PASS
+                auth_pass 1111
+        }
+        virtual_ipaddress {
+                10.0.0.4
+        }
+   }
+   ```
+   
+</details>
+  
+----------------------
+  
+<details>
+<summary>File cấu hình của gateway 2</summary>
+  
+```
+  bal_defs {
+        smtp_server localhost
+        smtp_connect_timeout 30
+  }
+
+  vrrp_instance VI_1 {
+        state MASTER
+        interface ens37
+        virtual_router_id 101
+        priority 100
+        advert_int 1
+        authentication {
+                auth_type PASS
+                auth_pass 1111
+        }
+        virtual_ipaddress {
+                10.0.0.4
+        }
+  }
+```
+</details>
+  
+  Giá trị ưu (prioty) tiên cao hơn thì đó là master server. Không quan trọng sử dụng trạng thái nào
+  
+  `virtual_router_id` phải giống nhau ở cả 2 server
+  
+  Mặc định `vrrp_instance` hỗ trợ tối đa 20 `virtual_ipaddress`
+  
+  #### Khởi động lại KeepAlived trên cả 2 server
+  
+  ```
+  sudo service keepalived start
+  ```
+  
+  Kiểm tra trên máy có prioty cao hơn
+  
+  ```
+  3: ens37: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0c:29:28:13:21 brd ff:ff:ff:ff:ff:ff
+    altname enp2s5
+    inet 10.0.0.1/24 brd 10.0.0.255 scope global ens37
+       valid_lft forever preferred_lft forever
+    inet 10.0.0.4/32 scope global ens37
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:fe28:1321/64 scope link 
+       valid_lft forever preferred_lft forever
+  ```
+  
+  ### Cài đặt trên các máy client
+  
+  
