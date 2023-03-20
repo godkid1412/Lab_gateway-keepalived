@@ -356,7 +356,8 @@ sudo apt install isc-dhcp-server
 Dùng `sudo vim /etc/dhcp/dhcpd.conf` để sửa file config
 
 ```
-# To specify the default and maximum lease time 
+# To specify the default and maximum lease time
+# Để option routers trùng với virtual_ipaddress đã cấu hình ở KeepAlived
 default-lease-time 600;
 
 max-lease-time 7200;
