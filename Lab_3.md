@@ -108,6 +108,27 @@ sudo iptables --table nat --append POSTROUTING -s 10.0.0.0/24 --out-interface en
 sudo iptables --table nat --append POSTROUTING -s 10.0.0.0/24 --out-interface ens38 --jump MASQUERADE
 
 ``` 
+
+Dùng `sudo iptables -t nat -L -v` để xem lại các cài đặt
+
+```
+gw1@gateway:~$ sudo iptables --table nat -L -v
+Chain PREROUTING (policy ACCEPT 25 packets, 3119 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain INPUT (policy ACCEPT 6 packets, 1119 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain OUTPUT (policy ACCEPT 34 packets, 2818 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain POSTROUTING (policy ACCEPT 34 packets, 2818 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 MASQUERADE  all  --  any    ens33   10.0.0.0/24          anywhere            
+    0     0 MASQUERADE  all  --  any    ens38   10.0.0.0/24          anywhere            
+gw1@gateway:~$ 
+
+```
 Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/iptables/rules.v4`
 </details>
   
@@ -201,8 +222,29 @@ Dùng các lệnh dưới để để thêm rule NAT
 sudo iptables --table nat --append POSTROUTING -s 10.0.0.0/24 --out-interface ens33 --jump MASQUERADE
 
 sudo iptables --table nat --append POSTROUTING -s 10.0.0.0/24 --out-interface ens38 --jump MASQUERADE
-
 ``` 
+
+
+Dùng `sudo iptables -t nat -L -v` để xem lại các cài đặt
+
+```
+gw1@gateway:~$ sudo iptables --table nat -L -v
+Chain PREROUTING (policy ACCEPT 25 packets, 3119 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain INPUT (policy ACCEPT 6 packets, 1119 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain OUTPUT (policy ACCEPT 34 packets, 2818 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain POSTROUTING (policy ACCEPT 34 packets, 2818 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 MASQUERADE  all  --  any    ens33   10.0.0.0/24          anywhere            
+    0     0 MASQUERADE  all  --  any    ens38   10.0.0.0/24          anywhere            
+gw1@gateway:~$ 
+
+```
 
 Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/iptables/rules.v4`
 
@@ -233,7 +275,7 @@ Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/ipt
    }
 
    vrrp_instance VI_1 {
-        state BACKUP
+        state MASTER
         interface ens37
         virtual_router_id 101
         priority 101
@@ -262,7 +304,7 @@ Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/ipt
   }
 
   vrrp_instance VI_1 {
-        state MASTER
+        state BACKUP
         interface ens37
         virtual_router_id 101
         priority 100
@@ -290,7 +332,7 @@ Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/ipt
   sudo service keepalived start
   ```
   
-  Kiểm tra trên máy có prioty cao hơn
+  Kiểm tra trên máy có prioty cao hơn. Trên interface được cấu hình có thêm virtual_ipaddress đã cấu hình  trước đó
   
   ```
   3: ens37: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
@@ -326,6 +368,7 @@ authoritative;
 subnet 10.0.0.0 netmask 255.255.255.0
 {
         range 10.0.0.100 10.0.0.200;
+        #range 10.0.0.50 10.0.0.70; với gw2
         option routers 10.0.0.4;
         option subnet-mask 255.255.255.0;
 }
@@ -340,4 +383,19 @@ Dùng `sudo systemctl enable isc-dhcp-server` để bật dịch vụ `isc-dhcp-
 
 ![image](https://user-images.githubusercontent.com/54473576/225839656-011d4d21-67d6-4eb0-ba37-c60a9086e1ea.png)
 
-IPv4 Methor để DHCP
+### Kiểm tra failover
+
+#### Khi cả 2 gw cùng hoạt động
+
+![image](https://user-images.githubusercontent.com/54473576/226300480-4dc572f3-32b7-4156-9848-c38696a70af0.png)
+
+Địa chỉ IP được nhận từ gateway1 có dải từ 10.0.0.100 đến 10.0.0.200
+
+#### Khi gateway1 bị down
+Máy mới kết nối sẽ nhận được địa chỉ từ gateway 2 có dải từ 10.0.0.50 đến 10.0.0.70 
+
+![image](https://user-images.githubusercontent.com/54473576/226301467-1a328ef2-a6df-4517-931c-64556b2cc587.png)
+
+  
+  
+
