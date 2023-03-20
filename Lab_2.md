@@ -153,12 +153,18 @@ default via 172.16.217.2 dev ens38 proto dhcp src 172.16.217.136 metric 100
 
 ![image](https://user-images.githubusercontent.com/54473576/226277064-577eeda9-a41b-40e0-b519-8ec9ab07742e.png)
 
-Khi cả 2 interface được kết nối
+#### Khi cả 2 interface được kết nối
 ![image](https://user-images.githubusercontent.com/54473576/226276776-f383c984-813c-406b-ac00-4b272d33b5b2.png)
 
-Khi 1 trong 2 interface được kết nối
+####Khi 1 trong 2 interface được kết nối
 
 ![Screenshot from 2023-03-20 15-16-14](https://user-images.githubusercontent.com/54473576/226283453-9326eed2-cc71-4ef6-8c2c-1e70f6030b0c.png)
+
+![image](https://user-images.githubusercontent.com/54473576/226287062-57643416-54b7-468d-83d9-3e05b7bf339b.png)
+
+#### Khi interface ens33 bị ngắt kết nối:
+
+![image](https://user-images.githubusercontent.com/54473576/226288067-e7a6da40-318a-44e7-8304-a2783fec742e.png)
 
 Khi cả 2 interface đều không được kết nối
 
