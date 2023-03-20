@@ -120,4 +120,7 @@ Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/ipt
 
 ![image](https://user-images.githubusercontent.com/54473576/225839656-011d4d21-67d6-4eb0-ba37-c60a9086e1ea.png)
 
-IPv4 Methor để DHCP
+### Kiểm tra trên máy client
+![Screenshot from 2023-03-20 13-44-04](https://user-images.githubusercontent.com/54473576/226266198-252cf5b2-4c9a-41c6-b204-23ac13081903.png)
+
+![Screenshot from 2023-03-20 13-46-32](https://user-images.githubusercontent.com/54473576/226266564-c93c0152-8603-46db-a239-05d773e5f468.png)
