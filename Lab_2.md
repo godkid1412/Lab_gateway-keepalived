@@ -133,8 +133,35 @@ sudo iptables --table nat --append POSTROUTING -s 10.0.0.0/24 --out-interface en
 
 Lưu cài đặt đã thay đổi với iptables: `sudo iptables-save > /etc/iptables/rules.v4`
 
+#### ip route của gateway
+
+```
+gw1@gateway:~$ ip route
+default dev ens33 scope link 
+default via 172.16.217.2 dev ens33 proto dhcp src 172.16.217.130 metric 100 
+default via 172.16.217.2 dev ens38 proto dhcp src 172.16.217.136 metric 100 
+10.0.0.0/24 dev ens37 proto kernel scope link src 10.0.0.1 
+172.16.217.0/24 dev ens33 proto kernel scope link src 172.16.217.130 metric 100 
+172.16.217.0/24 dev ens38 proto kernel scope link src 172.16.217.136 metric 100 
+172.16.217.2 dev ens33 proto dhcp scope link src 172.16.217.130 metric 100 
+172.16.217.2 dev ens38 proto dhcp scope link src 172.16.217.136 metric 100
+```
+
 ### Đối với máy client:
 
 ![image](https://user-images.githubusercontent.com/54473576/225839656-011d4d21-67d6-4eb0-ba37-c60a9086e1ea.png)
 
-IPv4 Methor để DHCP
+![image](https://user-images.githubusercontent.com/54473576/226277064-577eeda9-a41b-40e0-b519-8ec9ab07742e.png)
+
+Khi cả 2 interface được kết nối
+![image](https://user-images.githubusercontent.com/54473576/226276776-f383c984-813c-406b-ac00-4b272d33b5b2.png)
+
+Khi 1 trong 2 interface được kết nối
+
+![Screenshot from 2023-03-20 15-16-14](https://user-images.githubusercontent.com/54473576/226283453-9326eed2-cc71-4ef6-8c2c-1e70f6030b0c.png)
+
+Khi cả 2 interface đều không được kết nối
+
+![Screenshot from 2023-03-20 15-20-50](https://user-images.githubusercontent.com/54473576/226284055-c1206592-df5a-4fc5-99e6-66f402a00c7a.png)
+
+![Screenshot from 2023-03-20 15-20-55](https://user-images.githubusercontent.com/54473576/226284076-70b0b79f-2b41-4b41-bd8a-da39e4ac72d0.png)
